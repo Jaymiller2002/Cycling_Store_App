@@ -19,6 +19,20 @@ from my_app.models import Vehicle, Customer, CustomerOrder
 def print_separator():
     print("\033[96m" + "=" * 40 + "\033[0m")  # Cyan blue color
 
+# ASCII art for a car
+car_art = """🚗"""
+
+# ASCII art for Manage Customers
+manage_customers_emoji = """👤"""
+
+#ASCII art for Manage Orders
+manage_orders_emoji = """📦"""
+
+#ASCII art for back to menu
+back_to_menu_emoji = """⬅️"""
+
+#ASCII art for EXIT
+exit_art = """❌"""
 # CRUD operations for Vehicle
 def create_vehicle(type, number_in_stock, price, color):
     try:
@@ -115,16 +129,20 @@ def display_order_history(customer_id):
 def print_separator():
     print("\033[96m" + "=" * 40 + "\033[0m")  # Cyan blue color
 
-# Main menu and sub-menus
+# Main menu and sub-menus with ASCII art
 def main_menu():
     print_separator()
     print("\033[96m" + "1. Manage Vehicles" + "\033[0m")
+    print(car_art)
     print_separator()
     print("\033[95m" + "2. Manage Customers" + "\033[0m")
+    print(manage_customers_emoji)
     print_separator()
     print("\033[94m" + "3. Manage Orders" + "\033[0m")
+    print(manage_orders_emoji)
     print_separator()
     print("\033[93m" + "4. Exit" + "\033[0m")
+    print(exit_art)
     print_separator()
 
 def vehicle_menu():
@@ -132,12 +150,16 @@ def vehicle_menu():
     print("\033[96m" + "Vehicle Menu:" + "\033[0m")
     print_separator()
     print("\033[95m" + "1. Create Vehicle" + "\033[0m")
+    print(car_art)
     print_separator()
     print("\033[94m" + "2. Update Vehicle" + "\033[0m")
+    print(car_art)
     print_separator()
     print("\033[93m" + "3. Delete Vehicle" + "\033[0m")
+    print(car_art)
     print_separator()
     print("\033[92m" + "4. Back to Main Menu" + "\033[0m")
+    print(back_to_menu_emoji)
     print_separator()
 
 def customer_menu():
@@ -145,12 +167,16 @@ def customer_menu():
     print("\033[96m" + "Customer Menu:" + "\033[0m")
     print_separator()
     print("\033[95m" + "1. Create Customer" + "\033[0m")
+    print(manage_customers_emoji)
     print_separator()
     print("\033[94m" + "2. Update Customer" + "\033[0m")
+    print(manage_customers_emoji)
     print_separator()
     print("\033[93m" + "3. Delete Customer" + "\033[0m")
+    print(manage_customers_emoji)
     print_separator()
     print("\033[92m" + "4. Back to Main Menu" + "\033[0m")
+    print(back_to_menu_emoji)
     print_separator()
 
 def order_menu():
@@ -158,14 +184,19 @@ def order_menu():
     print("\033[96m" + "Order Menu:" + "\033[0m")
     print_separator()
     print("\033[95m" + "1. Create Order" + "\033[0m")
+    print(manage_orders_emoji)
     print_separator()
     print("\033[94m" + "2. Update Order" + "\033[0m")
+    print(manage_orders_emoji)
     print_separator()
     print("\033[93m" + "3. Delete Order" + "\033[0m")
+    print(manage_orders_emoji)
     print_separator()
     print("\033[92m" + "4. Display Order History for a Customer" + "\033[0m")
+    print(manage_orders_emoji)
     print_separator()
     print("\033[91m" + "5. Back to Main Menu" + "\033[0m")
+    print(back_to_menu_emoji)
     print_separator()
 
 if __name__ == "__main__":
@@ -267,7 +298,7 @@ if __name__ == "__main__":
                 else:
                     print("\033[91mInvalid choice. Please try again.\033[0m")
         elif choice == "4":
-            print("\033[92mExiting program. Goodbye!\033[0m")
+            print("\033[92mExiting program. Goodbye! 👋\033[0m")
             break
         else:
             print("\033[91mInvalid choice. Please try again.\033[0m")
