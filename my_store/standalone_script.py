@@ -40,7 +40,7 @@ def create_vehicle(type, number_in_stock, price, color):
         return True, "Vehicle created successfully."
     except Exception as e:
         return False, f"Failed to create vehicle: {str(e)}"
-
+# **kwarg becomes a dictionary where vehicle, key, and value are the arguemnets
 def update_vehicle(vehicle_id, **kwargs):
     try:
         vehicle = Vehicle.objects.get(id=vehicle_id)
