@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 
+# Define Vehicle model
 class Vehicle(models.Model):
     TYPE_CHOICES = [
         ('unicycle', 'Unicycle'),
@@ -13,9 +14,11 @@ class Vehicle(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     color = models.CharField(max_length=50, blank=True)
 
+# Define Customer model
 class Customer(models.Model):
     name = models.CharField(max_length=100)
 
+# Define CustomerOrder model
 class CustomerOrder(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     order = models.ManyToManyField(Vehicle)

@@ -19,115 +19,13 @@ from my_app.models import Vehicle, Customer, CustomerOrder
 def print_separator():
     print("\033[96m" + "=" * 40 + "\033[0m")  # Cyan blue color
 
-# Create instances of the Vehicle model
-vehicles = [
-    Vehicle.objects.create(type='unicycle', number_in_stock=5),
-    Vehicle.objects.create(type='bicycle', number_in_stock=10),
-    Vehicle.objects.create(type='tricycle', number_in_stock=8)
-]
-
-# Create instances of the Customer model
-customers = [
-    Customer.objects.create(name='Jay Miller'),
-    Customer.objects.create(name='Drew Stratton')
-]
-
-# Create instances of the CustomerOrder model
-orders = [
-    CustomerOrder.objects.create(customer=customers[0], created_date='2004-05-18', paid=True),
-    CustomerOrder.objects.create(customer=customers[1], created_date='2024-05-19', paid=False)
-]
-
-# Add vehicles to the orders
-orders[0].order.set([vehicles[0], vehicles[1]])
-orders[1].order.set([vehicles[2]])
-
-
-# Function to print separator in cyan blue
-def print_separator():
-    print("\033[96m" + "=" * 40 + "\033[0m")  # Cyan blue color
-
-# Function to display IDs for vehicles
-def display_vehicle_ids():
-    print("\033[96m" + "Vehicle IDs:" + "\033[0m")
-    for idx, vehicle in enumerate(vehicles, start=1):
-        print(f"\033[96m" + f"{idx}. ID: {vehicle.id}, Type: {vehicle.type}, Number in Stock: {vehicle.number_in_stock}" + "\033[0m")
-
-# Function to display IDs for customers
-def display_customer_ids():
-    print("\033[96m" + "Customer IDs:" + "\033[0m")
-    for idx, customer in enumerate(customers, start=1):
-        print(f"\033[96m" + f"{idx}. ID: {customer.id}, Name: {customer.name}" + "\033[0m")
-
-# Function to display IDs for customer orders
-def display_order_ids():
-    print("\033[96m" + "Order IDs:" + "\033[0m")
-    for idx, order in enumerate(orders, start=1):
-        print(f"\033[96m" + f"{idx}. ID: {order.id}, Customer: {order.customer.name}, Created Date: {order.created_date}, Paid: {order.paid}" + "\033[0m")
-
-# Print IDs of vehicles
-display_vehicle_ids()
-# Print out the attributes of each vehicle in cyan blue
-print_separator()
-print("\033[96m" + "Vehicles:" + "\033[0m")
-for vehicle in vehicles:
-    print("\033[96m" + f"ID: {vehicle.id}, Type: {vehicle.type}, Number in Stock: {vehicle.number_in_stock}" + "\033[0m")
-print_separator()
-
-# Print IDs of customers
-display_customer_ids()
-# Print out the attributes of each customer in cyan blue
-print("\033[96m" + "Customers:" + "\033[0m")
-for customer in customers:
-    print("\033[96m" + f"ID: {customer.id}, Name: {customer.name}" + "\033[0m")
-print_separator()
-
-# Print IDs of customer orders
-display_order_ids()
-# Print out the attributes of each customer order in cyan blue
-print("\033[96m" + "Customer Orders:" + "\033[0m")
-for order in orders:
-    print("\033[96m" + f"ID: {order.id}, Customer: {order.customer.name}, Created Date: {order.created_date}, Paid: {order.paid}" + "\033[0m")
-    print("\033[96m" + "Vehicles Ordered:" + "\033[0m")
-    for vehicle in order.order.all():
-        print("\033[96m" + f"- Type: {vehicle.type}, Number in Stock: {vehicle.number_in_stock}" + "\033[0m")
-    print_separator()
-
-
-
-
-
-
-# Print out the attributes of each vehicle in cyan blue
-print_separator()
-print("\033[96m" + "Vehicles:" + "\033[0m")
-for vehicle in vehicles:
-    print("\033[96m" + f"Type: {vehicle.type}, Number in Stock: {vehicle.number_in_stock}" + "\033[0m")
-print_separator()
-
-# Print out the attributes of each customer in cyan blue
-print("\033[96m" + "Customers:" + "\033[0m")
-for customer in customers:
-    print("\033[96m" + f"Name: {customer.name}" + "\033[0m")
-print_separator()
-
-# Print out the attributes of each customer order in cyan blue
-print("\033[96m" + "Customer Orders:" + "\033[0m")
-for order in orders:
-    print("\033[96m" + f"Customer: {order.customer.name}, Created Date: {order.created_date}, Paid: {order.paid}" + "\033[0m")
-    print("\033[96m" + "Vehicles Ordered:" + "\033[0m")
-    for vehicle in order.order.all():
-        print("\033[96m" + f"- Type: {vehicle.type}, Number in Stock: {vehicle.number_in_stock}" + "\033[0m")
-    print_separator()
-
-
 # CRUD operations for Vehicle
 def create_vehicle(type, number_in_stock, price, color):
     try:
         vehicle = Vehicle.objects.create(type=type, number_in_stock=number_in_stock, price=price, color=color)
-        return True, "\033[92mVehicle created successfully.\033[0m"
+        return True, "Vehicle created successfully."
     except Exception as e:
-        return False, f"\033[91mFailed to create vehicle: {str(e)}\033[0m"
+        return False, f"Failed to create vehicle: {str(e)}"
 
 def update_vehicle(vehicle_id, **kwargs):
     try:
@@ -135,25 +33,25 @@ def update_vehicle(vehicle_id, **kwargs):
         for key, value in kwargs.items():
             setattr(vehicle, key, value)
         vehicle.save()
-        return True, "\033[92mVehicle updated successfully.\033[0m"
+        return True, "Vehicle updated successfully."
     except Vehicle.DoesNotExist:
-        return False, "\033[91mVehicle not found.\033[0m"
+        return False, "Vehicle not found."
 
 def delete_vehicle(vehicle_id):
     try:
         vehicle = Vehicle.objects.get(id=vehicle_id)
         vehicle.delete()
-        return True, "\033[92mVehicle deleted successfully\033[0m"
+        return True, "Vehicle deleted successfully"
     except Vehicle.DoesNotExist:
-        return False, "\033[91mVehicle not found\033[0m"
+        return False, "Vehicle not found"
 
 # CRUD operations for Customer
 def create_customer(name):
     try:
         customer = Customer.objects.create(name=name)
-        return True, f"\033[92mCustomer '{name}' created successfully.\033[0m"
+        return True, f"Customer '{name}' created successfully."
     except Exception as e:
-        return False, f"\033[91mFailed to create customer: {str(e)}\033[0m"
+        return False, f"Failed to create customer: {str(e)}"
 
 def update_customer(customer_id, **kwargs):
     try:
@@ -161,17 +59,17 @@ def update_customer(customer_id, **kwargs):
         for key, value in kwargs.items():
             setattr(customer, key, value)
         customer.save()
-        return True, "\033[92mCustomer updated successfully.\033[0m"
+        return True, "Customer updated successfully."
     except Customer.DoesNotExist:
-        return False, "\033[91mCustomer not found.\033[0m"
+        return False, "Customer not found."
 
 def delete_customer(customer_id):
     try:
         customer = Customer.objects.get(id=customer_id)
         customer.delete()
-        return True, "\033[92mCustomer deleted successfully\033[0m"
+        return True, "Customer deleted successfully"
     except Customer.DoesNotExist:
-        return False, "\033[91mCustomer does not exist\033[0m"
+        return False, "Customer does not exist"
 
 # CRUD operations for CustomerOrder
 def create_customer_order(customer, order_list, created_date, paid):
@@ -179,9 +77,9 @@ def create_customer_order(customer, order_list, created_date, paid):
         order = CustomerOrder.objects.create(customer=customer, created_date=created_date, paid=paid)
         order.order.set(order_list)
         order.calculate_total_price()
-        return True, "\033[92mCustomer order created successfully.\033[0m"
+        return True, "Customer order created successfully."
     except Exception as e:
-        return False, f"\033[91mFailed to create customer order: {str(e)}\033[0m"
+        return False, f"Failed to create customer order: {str(e)}"
 
 def update_customer_order(order_id, **kwargs):
     try:
@@ -189,31 +87,35 @@ def update_customer_order(order_id, **kwargs):
         for key, value in kwargs.items():
             setattr(order, key, value)
         order.save()
-        return True, "\033[92mCustomer order updated successfully\033[0m"
+        return True, "Customer order updated successfully"
     except CustomerOrder.DoesNotExist:
-        return False, "\033[91mCustomer order not found\033[0m"
+        return False, "Customer order not found"
 
 def delete_customer_order(order_id):
     try:
         order = CustomerOrder.objects.get(id=order_id)
         order.delete()
-        return True, "\033[92mCustomer order deleted successfully\033[0m"
+        return True, "Customer order deleted successfully"
     except CustomerOrder.DoesNotExist:
-        return False, "\033[91mCustomer order not found\033[0m"
+        return False, "Customer order not found"
 
 # Display order history for a customer
 def display_order_history(customer_id):
     try:
         customer = Customer.objects.get(id=customer_id)
         orders = CustomerOrder.objects.filter(customer=customer)
-        print("\033[96m" + f"Order History for Customer: {customer.name}" + "\033[0m")
+        print(f"Order History for Customer: {customer.name}")
         for order in orders:
             print(order)
-        return True, "\033[92mOrder history displayed successfully\033[0m"
+        return True, "Order history displayed successfully"
     except Customer.DoesNotExist:
-        return False, "\033[91mCustomer not found\033[0m"
+        return False, "Customer not found"
 
-# Nest menu options for better user flow
+# Define separator printing function
+def print_separator():
+    print("\033[96m" + "=" * 40 + "\033[0m")  # Cyan blue color
+
+# Main menu and sub-menus
 def main_menu():
     print_separator()
     print("\033[96m" + "1. Manage Vehicles" + "\033[0m")
@@ -354,7 +256,7 @@ if __name__ == "__main__":
                 elif order_choice == "3":
                     # Cancel an order
                     order_id = int(input("\033[96mEnter order ID to cancel: \033[0m"))
-                    success, message = cancel_customer_order(order_id)
+                    success, message = delete_customer_order(order_id)
                     print(message)
                 elif order_choice == "4":
                     customer_id = int(input("\033[96mEnter customer ID to display order history: \033[0m"))
@@ -369,4 +271,3 @@ if __name__ == "__main__":
             break
         else:
             print("\033[91mInvalid choice. Please try again.\033[0m")
-            
