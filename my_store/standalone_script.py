@@ -114,13 +114,21 @@ def delete_customer_order(order_id):
         return False, "Customer order not found"
 
 # Display order history for a customer
-def display_order_history(customer_id):
+def display_order_history(customer_id=None):
     try:
-        customer = Customer.objects.get(id=customer_id)
-        orders = CustomerOrder.objects.filter(customer=customer)
-        print(f"Order History for Customer: {customer.name}")
-        for order in orders:
-            print(order)
+        if customer_id is not None:
+            # Display order history for a specific customer
+            customer = Customer.objects.get(id=customer_id)
+            orders = CustomerOrder.objects.filter(customer=customer)
+            print(f"Order History for Customer: {customer.name}")
+            for order in orders:
+                print(order)
+        else:
+            # Display order history for all customers
+            all_orders = CustomerOrder.objects.all()
+            print("Order History for All Customers:")
+            for order in all_orders:
+                print(order)
         return True, "Order history displayed successfully"
     except Customer.DoesNotExist:
         return False, "Customer not found"
@@ -290,8 +298,12 @@ if __name__ == "__main__":
                     success, message = delete_customer_order(order_id)
                     print(message)
                 elif order_choice == "4":
-                    customer_id = int(input("\033[96mEnter customer ID to display order history: \033[0m"))
-                    success, message = display_order_history(customer_id)
+                    customer_id_input = input("\033[96mEnter customer ID to display order history (leave blank to show all): \033[0m")
+                    if customer_id_input:
+                        customer_id = int(customer_id_input)
+                        success, message = display_order_history(customer_id)
+                    else:
+                        success, message = display_order_history()
                     print(message)
                 elif order_choice == "5":
                     break
