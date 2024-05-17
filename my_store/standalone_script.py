@@ -31,7 +31,9 @@ class Command(BaseCommand):
     help = 'Manage the cycling store'
 
     # Method called when the command is executed
-    def handle(self, *args, **kwargs):
+    def handle(self, *args, **kwargs): 
+    # (*args- used to pass non-keyworded, variable-length arguement list)
+    #(**kwargs- used to pass keyworded, variable-length arguement list)
         # 'self' is a reference to the current instance of the class.
         # It is used to access variables and methods within the class.
         # Here, 'handle' is a method of the Command class, and 'self' allows
