@@ -339,16 +339,16 @@ class Command(BaseCommand):
 
     def main_menu(self):
         while True:
-            print("\nCycling Store Management")
-            print("1. Order more Vehicles")
-            print("2. Create a new Customer")
-            print("3. create a new Customer Order")
-            print("4. Display Inventory")
-            print("5. Cancel a Customer Order")
-            print("6. Mark an Order as Paid")
-            print("7. Display Order History for a customer")
-            print("8. Exit")
-            choice = input("Selcet an option: ")
+            print("\n\033[97mCycling Store Management 🚲🛠️\033[0m")
+            print("\033[95m1. Order more Vehicles 🚗\033[0m")
+            print("\033[95m2. Create a new Customer 👤\033[0m")
+            print("\033[95m3. create a new Customer Order 👤📦\033[0m")
+            print("\033[94m4. Display Inventory 🛒\033[0m")
+            print("\033[91m5. Cancel a Customer Order ❌\033[0m")
+            print("\033[92m6. Mark an Order as Paid 💳\033[0m")
+            print("\033[94m7. Display Order History for a customer 🛒👤\033[0m")
+            print("\033[91m8. Exit ❌\033[0m")
+            choice = input("\033[92mSelect an option: \033[0m")
 
             if choice == '1':
                 self.order_more_vehicles()
@@ -367,63 +367,63 @@ class Command(BaseCommand):
             elif choice == '8':
                 break
             else:
-                print("Invalid choice, please try again.")
+                print("\033[91mInvalid choice, please try again.\033[0m")
     
 
     def order_more_vehicles(self):
-        vehicle_type = input("Enter vehicle type (unicycle, bicycle, tricycle): ").strip().lower()
-        quantity = self.get_positive_integer("Enter quantity: ")
-        price = self.get_positive_float("Enter price: ")
-        color = input("Enter color: ").strip()
+        vehicle_type = input("\033[95mEnter vehicle type (unicycle, bicycle, tricycle): \033[0m").strip().lower()
+        quantity = self.get_positive_integer("\033[95mEnter quantity: \033[0m")
+        price = self.get_positive_float("\033[95mEnter price: \033[0m")
+        color = input("\033[95mEnter color: \033[0m").strip()
         try:
             vehicle = Vehicle.objects.get(type=vehicle_type)
             vehicle.number_in_stock += quantity
         except Vehicle.DoesNotExist:
             vehicle = Vehicle(type=vehicle_type, number_in_stock=quantity, price=price, color=color)
         vehicle.save()
-        print(f"Updated stock for {vehicle_type}: {vehicle.number_in_stock}")
+        print(f"\033[92mUpdated stock for {vehicle_type}: {vehicle.number_in_stock}\033[0m")
 
     def create_new_customer(self):
-        name = input("Enter customer name: ").strip()
+        name = input("\033[95mEnter customer name: \033[0m").strip()
         Customer.objects.create(name=name)
-        print(f"Customer {name} created.")
+        print(f"\033[92mCustomer {name} created.\033[0m")
 
     def create_customer_order(self):
-        customer_name = input("Enter customer name: ").strip()
+        customer_name = input("\033[95mEnter customer name: \033[0m").strip()
         try:
             customer = Customer.objects.get(name=customer_name)
         except Customer.DoesNotExist:
-            print(f"No customer found with name {customer_name}")
+            print(f"\033[91mNo customer found with name {customer_name}\033[0m")
             return
         order = CustomerOrder.objects.create(customer=customer)
         while True:
-            vehicle_type = input("Enter vehicle type to order (or 'done' to finsih): ").strip().lower()
+            vehicle_type = input("\033[95mEnter vehicle type to order (or 'done' to finish): \033[0m").strip().lower()
             if vehicle_type == 'done':
                 break
             try:
                 vehicle = Vehicle.objects.get(type=vehicle_type)
                 if vehicle.number_in_stock > 0:
-                    quantity = self.get_positive_integer("Enter quantity: ")
+                    quantity = self.get_positive_integer("\033[95mEnter quantity: \033[0m")
                     if quantity <= vehicle.number_in_stock:
                         OrderItem.objects.create(order=order, vehicle=vehicle, quantity=quantity)
                         vehicle.number_in_stock -= quantity
                         vehicle.save()
-                        print(f"Added {quantity} {vehicle_type}(s) to order")
+                        print(f"\033[92mAdded {quantity} {vehicle_type}(s) to order\033[0m")
                     else:
-                        print(f"Not enough stock for {quantity} {vehicle_type}(s). Only {vehicle.number_in_stock} left.")
+                        print(f"\033[91mNot enough stock for {quantity} {vehicle_type}(s). Only {vehicle.number_in_stock} left.\033[0m")
                 else:
-                    print(f"No stock available for {vehicle_type}.")
+                    print(f"\033[91mNo stock available for {vehicle_type}.\033[0m")
             except Vehicle.DoesNotExist:
-                print(f"No vehicle found with type {vehicle_type}")
-        print(f"Order created with ID: {order.id}")
+                print(f"\033[91mNo vehicle found with type {vehicle_type}\033[0m")
+        print(f"\033[92mOrder created with ID: {order.id}\033[0m")
 
     def display_inventory(self):
-        print("\nCurrent Inventory:")
+        print("\n\033[94mCurrent Inventory:\033[0m")
         for vehicle in Vehicle.objects.all():
             print(f"{vehicle.type.capitalize()}: {vehicle.number_in_stock} in stock, ${vehicle.price}, Color: {vehicle.color or 'No color'}")
     
     def cancel_customer_order(self):
-        order_id = self.get_positive_integer("Enter order ID to cancel: ")
+        order_id = self.get_positive_integer("\033[91mEnter order ID to cancel: \033[0m")
         try:
             order = CustomerOrder.objects.get(id=order_id)
             for item in order.orderitem_set.all():
@@ -431,35 +431,35 @@ class Command(BaseCommand):
                 vehicle.number_in_stock += item.quantity
                 vehicle.save()
             order.delete()
-            print(f"Order {order_id} cancelled and stock updated.")
+            print(f"\033[91mOrder {order_id} cancelled and stock updated.\033[0m")
         except CustomerOrder.DoesNotExist:
-            print(f"No order found with ID {order_id}")
+            print(f"\033[91mNo order found with ID {order_id}\033[0m")
 
     def mark_order_paid(self):
-        order_id = self.get_positive_integer("Enter order ID to mark as paid: ")
+        order_id = self.get_positive_integer("\033[93mEnter order ID to mark as paid: \033[0m")
         try:
             order = CustomerOrder.objects.get(id=order_id)
             order.paid = True
             order.save()
-            print(f"Order {order_id} marked as paid.")
+            print(f"\033[92mOrder {order_id} marked as paid.\033[0m")
         except CustomerOrder.DoesNotExist:
-            print(f"No order found with ID {order_id}")
+            print(f"\033[91mNo order found with ID {order_id}\033[0m")
 
     def display_order_history(self):
-        customer_name = input("Enter customer name: ").strip()
+        customer_name = input("\033[94mEnter customer name: \033[0m").strip()
         try:
             customer = Customer.objects.get(name=customer_name)
             orders = CustomerOrder.objects.filter(customer=customer)
             if orders.exists():
-                print(f"Order history for {customer.name}:")
+                print(f"\033[94mOrder history for {customer.name}:\033[0m")
                 for order in orders:
                     print(f"Order ID: {order.id}, Paid: {'Yes' if order.paid else 'No'}, Created Date: {order.created_date}")
                     for item in order.orderitem_set.all():
                         print(f" - {item.quantity} x {item.vehicle.type}")
             else:
-                print(f"No orders found for {customer.name}.")
+                print(f"\033[91mNo orders found for {customer.name}.\033[0m")
         except Customer.DoesNotExist:
-            print(f"No customer found with name {customer.name}")
+            print(f"\033[91mNo customer found with name {customer.name}\033[0m")
 
     def get_positive_integer(self, prompt):
         while True:
@@ -468,9 +468,9 @@ class Command(BaseCommand):
                 if value > 0:
                     return value
                 else:
-                    print("Please enter a positive integer.")
+                    print("\033[91mPlease enter a positive integer.\033[0m")
             except ValueError:
-                print("Invalid input. Please enter a positive integer.")
+                print("\033[91mInvalid input. Please enter a positive integer.\033[0m")
 
     def get_positive_float(self, prompt):
         while True:
@@ -479,9 +479,9 @@ class Command(BaseCommand):
                 if value > 0:
                     return value
                 else:
-                    print("Please enter a positive number.")
+                    print("\033[91mPlease enter a positive number.\033[0m")
             except ValueError:
-                print("Invalid input. Please enter a positive number.")
+                print("\033[91mInvalid input. Please enter a positive number.\033[0m")
 
 
 if __name__ == "__main__":
